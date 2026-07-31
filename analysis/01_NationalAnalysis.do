@@ -420,7 +420,7 @@ sort order term
 gen pos = _N - _n + 1
 
 local mylabels
-forvalues i = 1(3)`=_N' {
+forvalues i = 1(2)`=_N' {
     local aname = aor[`i']
     local pnum  = pos[`i']
     local mylabels `mylabels' `pnum' `"`aname'"'
