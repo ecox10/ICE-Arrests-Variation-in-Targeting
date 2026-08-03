@@ -19,7 +19,7 @@
 *==================================
 
 forvalues fy = 23/26 { 
-	import excel "$data/2026-ICLI-00005_Arrests_Redacted/2026-ICLI-00005_Arrests_FY`fy'_20260311_Redacted", clear cellrange(A7) firstrow
+	import excel "$data/DDP/2026-ICLI-00005_Arrests_FY`fy'_20260311_Redacted", clear cellrange(A7) firstrow
 	
 	tempfile dat`fy'
 	save `dat`fy'', replace

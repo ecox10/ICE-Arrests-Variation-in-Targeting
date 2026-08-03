@@ -23,6 +23,14 @@
 *==================================
 
 *==================================
+* Note for users: 
+* 
+* We note two empirical decisions we made that our results are robust to:
+* 		1. 	Alternative methods to aggregate over time. We settled on a 15 day moving average but also explore MA of diff lengths as well as weekly averages, weekly totals, etc. 
+* 		2.  The treatment of days with no arrests. We decided to leave those as missing since they are rare and the percent with a criminal conviction would be unobserved. But results on number of arrests are robust to imputing zeros on these no arrest days. 
+*==================================
+
+*==================================
 * Some lite data prep
 *==================================
 
@@ -78,6 +86,7 @@ preserve
 use "$data/noncit_2023_byaor.dta", clear
 rename year datayear 
 gen year = datayear + 1
+rename aor ApprehensionAOR
 keep ApprehensionAOR year noncit_2023
 collapse (sum) noncit = noncit_2023, by(year)
 tempfile noncit 
@@ -97,18 +106,18 @@ twoway (line ma_arrests_noncit date if date >= dmy(1,10,2015), lcolor(black) yax
 xline(20839, lcolor(red)) ///
 xline(23762, lcolor(red)) ///
 xline(22300, lcolor(red)) ///
-text(2.25 21075 "Trump's First", size(small)) ///
-text(2 21075 "Inauguration", size(small)) ///
-text(3.75 22500 "Biden's", size(small)) ///
-text(3.5 22590 "Inauguration", size(small)) ///
-text(3 23470 "Trump's Second", size(small)) ///
-text(2.75 23530 "Inauguration", size(small)) ///
+text(3 21075 "Trump's First", size(small)) ///
+text(2.5 21075 "Inauguration", size(small)) ///
+text(7.5 22500 "Biden's", size(small)) ///
+text(7 22590 "Inauguration", size(small)) ///
+text(6 23470 "Trump's Second", size(small)) ///
+text(5.5 23530 "Inauguration", size(small)) ///
 scheme(plotplainblind) ///
 xtitle("") ///
 ytitle("Number of Arrests per 100k Non-Citizens", axis(1) margin(0 0 0 12)) ///
 ytitle("Percent Convicted of a Crime", axis(2) margin(0 0 0 22)) ///
 xlabel(#20, ang(90) format(%tdMon_CCYY) labgap(vhuge)) ///
-ylabel(0(0.5)4, labgap(large) labcolor("41 64 62")) ///
+ylabel(0(1)8, labgap(large) labcolor("41 64 62")) ///
 ylabel(0(10)90, axis(2) labgap(small) labcolor("82 106 57")) ///
 xlabel(20355(365)24175) ///
 yscale(titlegap(2)) ///
@@ -169,6 +178,7 @@ preserve
 use "$data/noncit_2023_byaor.dta", clear
 rename year datayear 
 gen year = datayear + 1
+rename aor ApprehensionAOR
 keep ApprehensionAOR year noncit_2023
 collapse (sum) noncit = noncit_2023, by(year)
 tempfile noncit 
@@ -191,18 +201,18 @@ twoway (line ma_arrests_noncit date if appmethod == 1 & date >= dmy(1,10,2015), 
 xline(20839, lcolor(red)) ///
 xline(23762, lcolor(red)) ///
 xline(22300, lcolor(red)) /// 
-text(1.5 21075 "Trump's First", size(small)) ///
-text(1.25 21075 "Inauguration", size(small)) ///
-text(3.75 22500 "Biden's", size(small)) ///
-text(3.5 22590 "Inauguration", size(small)) ///
-text(3 23470 "Trump's Second", size(small)) ///
-text(2.75 23530 "Inauguration", size(small)) ///
+text(3 21075 "Trump's First", size(small)) ///
+text(2.5 21075 "Inauguration", size(small)) ///
+text(7.5 22500 "Biden's", size(small)) ///
+text(7 22590 "Inauguration", size(small)) ///
+text(6 23470 "Trump's Second", size(small)) ///
+text(5.5 23530 "Inauguration", size(small)) ///
 scheme(plotplainblind) ///
 xtitle("") ///
 ytitle("Number of Arrests per 100k Non-Citizens", axis(1) margin(0 0 0 12)) ///
 ytitle("Percent with a Criminal Conviction", axis(2) margin(0 0 0 12)) ///
 xlabel(#20, ang(90) format(%tdMon_CCYY) labgap(vhuge)) ///
-ylabel(0(0.5)4, labgap(large) labcolor("41 64 62")) ///
+ylabel(0(1)8, labgap(large) labcolor("41 64 62")) ///
 ylabel(0(10)100, axis(2) labgap(large)) ///
 xlabel(20355(365)24175) ///
 yscale(titlegap(2)) ///
@@ -217,7 +227,7 @@ graph export "$figs/arrests_2015_2025_bymethod_noncit.pdf", replace width(20)
 
 
 /* ===== SECTION 1: LOAD DATA AND PREP for term 1 ======= */
-use "$data/Appended_Garcia.dta", clear
+import delimited "$data/Appended_Garcia.csv", clear varnames(1)
 
 gen arrest_date_temp = date(apprehensiondate, "20YMD")
 format arrest_date_temp %td

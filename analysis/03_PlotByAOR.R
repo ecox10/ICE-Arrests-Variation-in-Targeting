@@ -42,8 +42,9 @@ equal_breaks <- function(n = 3, s = 0.1,...){
 setwd("") # Set working directory path here
 
 relinaug_dat <- read.csv("Data/arrests_relinaug_v2.csv")
-noncit <- read.csv("Data/noncit_2023_byaor.csv") %>% select(ApprehensionAOR, year, noncit_2023)
+noncit <- read.csv("Data/noncit_2023_byaor.csv") %>% select(aor, year, noncit_2023)
 
+noncit$ApprehensionAOR <- noncit$aor
 noncit <- reshape(noncit, idvar = "ApprehensionAOR", timevar = "year", direction = "wide")
 noncit$ApprehensionAOR <- gsub(" Area of Responsibility", " AOR", noncit$ApprehensionAOR)
 

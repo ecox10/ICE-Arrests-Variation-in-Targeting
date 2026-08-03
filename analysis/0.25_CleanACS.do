@@ -18,7 +18,7 @@
 * Read Citizenship data 
 *****
 forvalues i = 2010/2024 {
-	import delimited "$data/ACS_noncit/ACSDT5Y`i'.B05001-Data.csv", clear rowrange(2:3224) varnames(1)
+	import delimited "$data/ACS/ACSDT5Y`i'.B05001-Data.csv", clear rowrange(2:3224) varnames(1)
 	drop if geo_id == "Geography"
 	
 	gen year = `i'
