@@ -11,7 +11,7 @@
 
 *==================================
 * inputs:
-*		Appended_Garcia.dta: Garcia Hernandez data 
+*		Appended_Garcia.csv: Garcia Hernandez data 
 * 		AdminArrests_MidMar.dta: DDP data covering 2023+
 *==================================
 
