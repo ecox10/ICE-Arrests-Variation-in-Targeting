@@ -23,7 +23,7 @@
 *==================================
 
 *==================================
-* Note for users: 
+* Note for users
 * 
 * We note two empirical decisions we made that our results are robust to:
 * 		1. 	Alternative methods to aggregate over time. We settled on a 15 day moving average but also explore MA of diff lengths as well as weekly averages, weekly totals, etc. 
@@ -220,6 +220,59 @@ xsize(8) ///
 legend(pos(6) rows(2) order(1 "# LEA Arrests" 2 "# Community Arrests" 3 "% LEA with Conviction" 4 "% Community Arrests with Conviction")) // 
 graph export "$figs/arrests_2015_2025_bymethod_noncit.pdf", replace width(20)
 
+*==================================
+* National estimated decline in conviction rate
+*==================================
+
+import delimited "$data/unsmoothed_arrests_criminality_method_fy15_26.csv", clear varnames(1)
+
+rename apprehensiondate date_st
+gen date = date(date_st, "YMD")
+format date %td
+
+* Collapse for total arrests 
+preserve 
+collapse (sum) arrests pconv_tot = pct, by(date)
+tempfile arrests 
+save `arrests', replace
+restore 
+
+* Arrests with convictions
+collapse (sum) pconv = pct if criminality == "Convicted", by(date)
+merge 1:1 date using `arrests'
+drop _merge
+
+gen year = year(date)
+
+gen pconv_appmethod = (pconv/pconv_tot)*100 
+
+sort date 
+gen ma_arrests = (arrests[_n-7] + arrests[_n-6] + arrests[_n-5] + ///
+arrests[_n-4] + arrests[_n-3] + arrests[_n-2] + arrests[_n-1] + arrests[_n] + arrests[_n+1] + arrests[_n+2] + arrests[_n+3] + arrests[_n+4] + arrests[_n+5] + arrests[_n+6] + arrests[_n+7])/15
+gen ma_pconv = (pconv_appmethod[_n-7] + pconv_appmethod[_n-6] + pconv_appmethod[_n-5] + ///
+pconv_appmethod[_n-4] + pconv_appmethod[_n-3] + pconv_appmethod[_n-2] + pconv_appmethod[_n-1] + pconv_appmethod[_n] + pconv_appmethod[_n+1] + pconv_appmethod[_n+2] + pconv_appmethod[_n+3] + pconv_appmethod[_n+4] + pconv_appmethod[_n+5] + pconv_appmethod[_n+6] + pconv_appmethod[_n+7])/15
+
+* Add non-citizen count from ACS 
+preserve 
+use "$data/noncit_2023_byaor.dta", clear
+rename year datayear 
+gen year = datayear + 1
+rename aor ApprehensionAOR
+keep ApprehensionAOR year noncit_2023
+collapse (sum) noncit = noncit_2023, by(year)
+tempfile noncit 
+save `noncit', replace
+restore 
+
+merge m:1 year using `noncit'
+
+* Calculate arrests per 100k noncit 
+gen ma_arrests_noncit = (ma_arrests/noncit) * 100000
+
+* Prediction exercise (for 13% number)
+reg ma_pconv ma_arrests_noncit if date >= dmy(1,10,2015) & date <= dmy(19, 1, 2025) 
+predict pred_pconv if date >= dmy(20,1,2025) & date <= dmy(10, 3, 2026), xb
+sum ma_pconv pred_pconv if date >= dmy(20, 1, 2025)
 
 *==================================
 * Mean Decomposition Figure

@@ -124,6 +124,7 @@ restore
 * AOR Level 
 collapse (sum) arrests_new = ones lea_new = lea commarr_nes = communityarrest if  inrange(date, mdy(1,20,2025) - 414, mdy(1,20,2025) + 414), by(date_rel_inaug ApprehensionAOR)
 
+
 sort ApprehensionAOR date 
 by ApprehensionAOR: gen ma_new_lea = (lea_new[_n-7] + lea_new[_n-6] + lea_new[_n-5] + ///
 lea_new[_n-4] + lea_new[_n-3] + lea_new[_n-2] + lea_new[_n-1] + lea_new[_n] + lea_new[_n+1] + lea_new[_n+2] + lea_new[_n+3] + lea_new[_n+4] + lea_new[_n+5] + lea_new[_n+6] + lea_new[_n+7])/15
@@ -152,3 +153,5 @@ replace ApprehensionAOR = subinstr(ApprehensionAOR, " Area of Responsibility", "
 *****
 drop if ApprehensionAOR == "HQ"
 export delimited "$data/arrests_relinaug_v2.csv", replace
+
+
