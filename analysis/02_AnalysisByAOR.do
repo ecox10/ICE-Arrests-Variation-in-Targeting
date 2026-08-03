@@ -20,7 +20,7 @@
 *==================================
 
 **** 2016-2017 Data 
-use "$data/Appended_Garcia.dta", clear
+import delimited "$data/Appended_Garcia.csv", clear varnames(1)
 
 gen arrest_date_temp = date(apprehensiondate, "20YMD")
 format arrest_date_temp %td

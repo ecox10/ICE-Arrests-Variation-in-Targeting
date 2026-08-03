@@ -11,9 +11,9 @@
 
 *==================================
 * inputs:
-* 		unsmoothed_arrests_criminality_method_fy15_25_corrected.csv: Appended Hernandez, and DDP data 
+* 		unsmoothed_arrests_criminality_method_fy15_26.csv: Appended Hernandez, and DDP data 
 *		Appended_Garcia.dta: Garcia Hernandez data
-* 		AdminArrests_MidOct.dta: DDP data covering 2023+
+* 		AdminArrests_MidMar.dta: DDP data covering 2023+
 *==================================
 
 *==================================
@@ -104,7 +104,7 @@ gen ma_arrests_noncit = (ma_arrests/noncit) * 100000
 twoway (line ma_arrests_noncit date if date >= dmy(1,10,2015), lcolor(black) yaxis(1)) ///lcolor("79 56 62 49")
 (line ma_conv date if date >= dmy(1,10,2015), lcolor("0 153 0") yaxis(2)), ///80 14 48 0
 xline(20839, lcolor(red)) ///
-xline(23762, lcolor(red)) ///
+xline(23761, lcolor(red)) ///
 xline(22300, lcolor(red)) ///
 text(3 21075 "Trump's First", size(small)) ///
 text(2.5 21075 "Inauguration", size(small)) ///
@@ -199,7 +199,7 @@ twoway (line ma_arrests_noncit date if appmethod == 1 & date >= dmy(1,10,2015), 
 (line ma_arrests_noncit date if appmethod == 2 & date >= dmy(1,10,2015), lcolor("0 153 255") lpattern(solid) yaxis(1)) ///
 (line ma_pconv date if appmethod == 2 & date >= dmy(1,10,2015), lcolor("184 226 255") yaxis(2) lpattern(dash)), ///
 xline(20839, lcolor(red)) ///
-xline(23762, lcolor(red)) ///
+xline(23761, lcolor(red)) ///
 xline(22300, lcolor(red)) /// 
 text(3 21075 "Trump's First", size(small)) ///
 text(2.5 21075 "Inauguration", size(small)) ///
