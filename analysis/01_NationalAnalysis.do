@@ -18,8 +18,8 @@
 
 *==================================
 * Outputs: 
-* 		Figure 1 panels (a) and (b): arrests_ddp_2015_2025(OCT)_noncit.pdf and arrests_2015_2025_bymethod_noncit.pdf
-* 		Figure 3: meandecomp_byaor.pdf
+* 		Figure 1 panels (a) and (b): arrests_ddp_2015_2025(OCT)_noncit.png and arrests_2015_2025_bymethod_noncit.png
+* 		Figure 3: meandecomp_byaor.png
 *==================================
 
 *==================================
@@ -124,7 +124,7 @@ yscale(titlegap(2)) ///
 xsize(8) ///
 yscale(axis(2) titlegap(3)) ///
 legend(pos(6) rows(1) order(1 "Total Arrests" 2 "Percent of Arrested People with Criminal Convictions"))
-graph export "$figs/arrests_ddp_2015_2025(OCT)_noncit.pdf", replace width(20)
+graph export "$figs/arrests_ddp_2015_2025(OCT)_noncit.png", replace 
 
 *==================================
 * Prep data by apprehension method
@@ -218,7 +218,7 @@ xlabel(20355(365)24175) ///
 yscale(titlegap(2)) ///
 xsize(8) ///
 legend(pos(6) rows(2) order(1 "# LEA Arrests" 2 "# Community Arrests" 3 "% LEA with Conviction" 4 "% Community Arrests with Conviction")) // 
-graph export "$figs/arrests_2015_2025_bymethod_noncit.pdf", replace width(20)
+graph export "$figs/arrests_2015_2025_bymethod_noncit.png", replace 
 
 *==================================
 * National estimated decline in conviction rate
@@ -523,5 +523,5 @@ twoway ///                             ///
            rows(3) position(6) size(vsmall) region(lcolor(white)))                ///
     graphregion(color(white)) plotregion(margin(small)) ///
 	ysize(7) 
-	graph export "$figs/meandecomp_byaor.pdf", replace height(20) 
+	graph export "$figs/meandecomp_byaor.png", replace 
 
