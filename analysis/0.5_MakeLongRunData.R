@@ -10,6 +10,14 @@
 # # arrests and % convicted over time
 #############################
 
+#############################
+# User note: 
+#   The replication package code data download should automatically save DDP and 
+#   Garcia Hernandez data in separate folders. The code assumes that these data sets 
+#   are saved in separate folders, but users should check that paths on lines 60 and 
+#   103 match where these are saved. 
+#############################
+
 #=============================
 # Load Packages  
 #=============================
@@ -24,7 +32,7 @@ library(zoo)
 library(xts)
 library(utils)
 
-setwd("") # Set working directory path here
+setwd("") # Set working directory path here. This should contain a subfolder for data and output
 
 #=============================
 # Define Helper Function: read all sheets from an Excel file
@@ -49,7 +57,7 @@ file_reader <- function(file){
 # Dataset 1: Garcia Hernandez Data (FY2015--FY2023)
 #=============================
 
-path <- "" # Set path to where this data is saved here
+path <- "data/Garcia Hernandez" # Users might need to adjust the path to where this data is saved here
 
 # Get list of all Excel files
 files <- list.files(path, pattern = "\\.xlsx?$", full.names = TRUE)
@@ -92,7 +100,7 @@ write.csv(appended_garcia, "./Data/Appended_Garcia.csv")
 # Dataset 3: DDP Data (FY2023--2026)
 #=============================
 
-path <- "" # Set path to where DDP data is saved here
+path <- "data/DDP" # Users might need to adjust the path to where this data is saved here
 
 # Get list of all Excel files
 files <- list.files(path, pattern = "^[^~].*\\.xlsx?$", full.names = TRUE)
