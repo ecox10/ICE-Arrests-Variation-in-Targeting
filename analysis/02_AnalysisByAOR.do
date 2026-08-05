@@ -22,6 +22,8 @@
 **** 2016-2017 Data 
 import delimited "$data/Appended_Garcia.csv", clear varnames(1)
 
+replace apprehensionaor = "San Antonio Area of Responsibility" if apprehensionaor == "Houston Area of Responsibility"
+
 gen arrest_date_temp = date(apprehensiondate, "20YMD")
 format arrest_date_temp %td
 rename arrest_date_temp date
